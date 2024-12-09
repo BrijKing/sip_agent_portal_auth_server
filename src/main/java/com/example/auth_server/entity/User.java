@@ -26,7 +26,7 @@ public class User {
     @NotBlank(message = "UserName is required")
     private String userName;
 
-    @Column(name = "user_email")
+    @Column(name = "user_email", unique = true, nullable = false)
     @Email(message = "Email formate is not valid")
     @NotBlank(message = "email is required")
     private String email;
