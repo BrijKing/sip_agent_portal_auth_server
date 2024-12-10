@@ -8,6 +8,7 @@ import jakarta.persistence.Id;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -16,6 +17,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
+@Builder
 public class User {
 
     @Id
@@ -26,7 +28,7 @@ public class User {
     @NotBlank(message = "UserName is required")
     private String userName;
 
-    @Column(name = "user_email")
+    @Column(name = "user_email", unique = true, nullable = false)
     @Email(message = "Email formate is not valid")
     @NotBlank(message = "email is required")
     private String email;
