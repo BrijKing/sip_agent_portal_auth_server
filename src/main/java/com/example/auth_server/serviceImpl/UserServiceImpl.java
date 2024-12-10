@@ -90,7 +90,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public ResponseEntity<String> loginUser(AuthRequest authRequest) {
+    public String loginUser(AuthRequest authRequest) {
         
         Authentication authenticate = authenticationManager.authenticate(
             new UsernamePasswordAuthenticationToken(authRequest.getEmail(), authRequest.getPassword())
@@ -98,10 +98,10 @@ public class UserServiceImpl implements UserService {
 
         if (!authenticate.isAuthenticated()){
 
-            return new ResponseEntity<String>("User is not valid. ", HttpStatus.UNAUTHORIZED);
+            return "user is not valid ";
         }
 
-        return new ResponseEntity<String>(jwtService.generateToken(authRequest.getEmail()),HttpStatus.OK);
+        return jwtService.generateToken(authRequest.getEmail());
 
     }
     

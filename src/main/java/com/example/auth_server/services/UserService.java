@@ -13,7 +13,7 @@ public interface UserService {
 
     UserDTO registerUser(User user) throws UnableToSaveUserException;
 
-    ResponseEntity<String> loginUser(AuthRequest authRequest);
+    String loginUser(AuthRequest authRequest);
 
     UserDTO getUser(String email);
 
