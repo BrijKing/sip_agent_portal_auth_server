@@ -9,7 +9,9 @@ import com.example.auth_server.Models.ResponseDTO;
 import com.example.auth_server.Models.UserDTO;
 import com.example.auth_server.custom_exceptions.UnableToSaveUserException;
 import com.example.auth_server.entity.User;
+import com.example.auth_server.services.AgentServiceClient;
 import com.example.auth_server.services.UserService;
+import com.netflix.discovery.converters.Auto;
 
 import jakarta.validation.Valid;
 
@@ -32,32 +34,24 @@ public class AuthController {
     @Autowired
     private UserService userService;
 
+    @Autowired
+    private AgentServiceClient agentServiceClient;
+
     @PostMapping("/registerUser")
     public ResponseEntity<ResponseDTO> registerUser(@RequestBody @Valid RegisterRequest registerRequest) throws UnableToSaveUserException {
 
-        UserDTO userDTO = UserDTO.builder()
-                            .email(registerRequest.getEmail())
-                            .userName(registerRequest.getUserName())
-                            .build();
-
-        System.out.println(registerRequest.toString());
-
-        // if(registerRequest.getRole().equals("agent") && (registerRequest.getAgent_code() == null)){
-
-        //     return new ResponseEntity<ResponseDTO>(ResponseDTO.builder()
-        //                                                     .message("agent_code is required ")
-        //                                                     .build(),HttpStatus.BAD_REQUEST);
-        // }
-
+      
         User user = User.builder()
                         .email(registerRequest.getEmail())
                         .password(registerRequest.getPassword())
                         .userName(registerRequest.getUserName())
-                        .role(registerRequest.getRole())
+                        .role(registerRequest.getRole().toUpperCase())
                         .build();
 
-
-        
+        if (user.getRole().equals("AGENT")) {
+            agentServiceClient.saveAgent(registerRequest);
+        }
+   
         UserDTO savedUser =  userService.registerUser(user);
 
         return new ResponseEntity<>(ResponseDTO.builder()

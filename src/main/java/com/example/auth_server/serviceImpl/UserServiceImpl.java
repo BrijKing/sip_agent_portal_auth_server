@@ -1,6 +1,8 @@
 package com.example.auth_server.serviceImpl;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,6 +20,7 @@ import com.example.auth_server.Models.UserDTO;
 import com.example.auth_server.custom_exceptions.UnableToSaveUserException;
 import com.example.auth_server.entity.User;
 import com.example.auth_server.repository.UserRepository;
+import com.example.auth_server.services.AgentServiceClient;
 import com.example.auth_server.services.JwtService;
 import com.example.auth_server.services.UserService;
 
@@ -36,6 +39,9 @@ public class UserServiceImpl implements UserService {
 
     @Autowired
     JwtService jwtService;
+
+    @Autowired
+    AgentServiceClient agentServiceClient;
 
     @Override
     public UserDTO registerUser(User user) throws UnableToSaveUserException {
