@@ -48,11 +48,13 @@ public class AuthController {
                         .role(registerRequest.getRole().toUpperCase())
                         .build();
 
+       
+        UserDTO savedUser =  userService.registerUser(user);
+
         if (user.getRole().equals("AGENT")) {
             agentServiceClient.saveAgent(registerRequest);
         }
    
-        UserDTO savedUser =  userService.registerUser(user);
 
         return new ResponseEntity<>(ResponseDTO.builder()
                                                 .object(savedUser)
