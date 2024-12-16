@@ -110,5 +110,10 @@ public class UserServiceImpl implements UserService {
         return jwtService.generateToken(authRequest.getEmail());
 
     }
+
+    @Override
+    public void deleteUser(String email) {
+        userRepository.delete(userRepository.findByEmail(email).orElseThrow(() -> new UsernameNotFoundException("user not found with email : " + email)));
+    }
     
 }

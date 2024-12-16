@@ -18,6 +18,9 @@ public interface UserService {
     UserDTO getUser(String email);
 
     List<UserDTO> getAllUser();
+
+    void deleteUser(String email);
+
     
 
 }

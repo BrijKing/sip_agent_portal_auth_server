@@ -2,7 +2,7 @@ package com.example.auth_server.Models;
 
 import com.example.auth_server.annotation.ValidRoleAndAgentCode;
 
-import jakarta.validation.constraints.NotBlank;
+
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;

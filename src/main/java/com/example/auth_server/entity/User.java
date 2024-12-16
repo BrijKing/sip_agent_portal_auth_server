@@ -2,6 +2,8 @@ package com.example.auth_server.entity;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -11,6 +13,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import com.example.auth_server.Models.Role;
 
 
 @Entity
@@ -39,6 +42,11 @@ public class User {
 
     @Column(name = "role")
     @NotBlank(message = "role is required")
-    private String role;
+    @Enumerated(EnumType.STRING)
+    private Role role;
+
+    public String getRole(){
+        return this.role.toString();
+    }
     
 }

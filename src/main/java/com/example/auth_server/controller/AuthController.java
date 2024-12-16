@@ -6,6 +6,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.example.auth_server.Models.AuthRequest;
 import com.example.auth_server.Models.RegisterRequest;
 import com.example.auth_server.Models.ResponseDTO;
+import com.example.auth_server.Models.Role;
 import com.example.auth_server.Models.UserDTO;
 import com.example.auth_server.custom_exceptions.UnableToSaveUserException;
 import com.example.auth_server.entity.User;
@@ -40,18 +41,38 @@ public class AuthController {
     @PostMapping("/registerUser")
     public ResponseEntity<ResponseDTO> registerUser(@RequestBody @Valid RegisterRequest registerRequest) throws UnableToSaveUserException {
 
+        Role userRole;
+
+
+        switch (registerRequest.getRole()) {
+            case "USER":
+                userRole = Role.USER;
+                break;
+            case "AGENT":
+                userRole =  Role.AGENT;
+                break;
+        
+            default:
+                return new ResponseEntity<>(ResponseDTO.builder()
+                                                        .object(registerRequest)
+                                                        .httpStatus(HttpStatus.BAD_REQUEST)
+                                                        .message("Invalid Role of User")
+                                                        .build(), HttpStatus.BAD_REQUEST);   
+                
+        }
+
       
         User user = User.builder()
                         .email(registerRequest.getEmail())
                         .password(registerRequest.getPassword())
                         .userName(registerRequest.getUserName())
-                        .role(registerRequest.getRole().toUpperCase())
+                        .role(userRole)
                         .build();
 
        
         UserDTO savedUser =  userService.registerUser(user);
 
-        if (user.getRole().equals("AGENT")) {
+        if (user.getRole().equals(Role.AGENT.toString())) {
             agentServiceClient.saveAgent(registerRequest);
         }
    
